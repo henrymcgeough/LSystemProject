@@ -36,8 +36,8 @@ class lsystem:
         self.rule2 = config.get('Section1', 'rule2')  # second rule, will be null if there is only one rule
         self.angle = config.getfloat('Section1', 'angle')  # angle used for drawing
         self.length = 25  # length of line to draw
-        self.bg = 0  # background color
-        self.pc = 0  # pen colour
+        self.bg = 0  # background color = black
+        self.pc = 4  # pen color = white
         self.recursion = self.axiom  # input string used for draw each iteration
         self.production = self.axiom  # output string used to draw each iteration
         self.stack = [0]  # stack
@@ -53,16 +53,19 @@ class lsystem:
             self.increment()
         elif fn == 45:
             self.decrement()
-        elif fn == 97:  # a key - increment angle by 45 degrees
-            self.angle += 90
-            self.lt()
-        elif fn == 115:  # a key - increment angle by 45 degrees
-            self.angle -= 90
-            self.rt()
         elif fn == 98:  # b key - change background colour
+            self.bg += 1
             self.background()
         elif fn == 112:  # p key - change pen colour
+            self.pc += 1
             self.pencolor()
+        # change angle code not working yet
+        #elif fn == 97:  # a key - increment angle by 45 degrees
+        #    self.angle += 90
+        #    self.lt()
+        #elif fn == 115:  # a key - increment angle by 45 degrees
+        #    self.angle -= 90
+        #    self.rt()
         elif fn == 48:
             config.read('test.ini')
         elif fn == 49:
@@ -100,12 +103,14 @@ class lsystem:
     # Turtle Graphics used by L System
 
     def clear(self):
+        self.ts=turtle.Screen()
+        self.ts.title("L-Systems")
         # clearscreen before iteration
         turtle.colormode(255)
-        turtle.clearscreen()
-        turtle.reset()
         self.background()
         self.pencolor()
+        turtle.clear()
+        #turtle.reset()
         # not sure about this yet
         turtle.penup()
         turtle.setposition(0, -350)
@@ -116,15 +121,22 @@ class lsystem:
     def background(self):
         turtle.colormode(255)
         bg = self.bg
-        self.bg += 1
         if bg == 0:  # black
-            turtle.fillcolor(0, 0, 0)
+            self.ts=turtle.Screen()
+            self.ts.bgcolor("white")
         elif bg == 1:  # green
-            turtle.fillcolor(255, 0, 0)
+            self.ts=turtle.Screen()
+            self.ts.bgcolor("red")
         elif bg == 2:  # blue
+            self.ts=turtle.Screen()
+            self.ts.bgcolor("green")
             turtle.fillcolor(0, 255, 0)
         elif bg == 3:  # blue
-            turtle.fillcolor(255, 255, 255)
+            self.ts=turtle.Screen()
+            self.ts.bgcolor("blue")
+        elif bg == 4:  # blue
+            self.ts=turtle.Screen()
+            self.ts.bgcolor("black")
         else:
             self.bg = 0
 
@@ -132,7 +144,6 @@ class lsystem:
     def pencolor(self):
         turtle.colormode(255)
         pc = self.pc
-        self.pc += 1
         if pc == 0:  # black
             turtle.pencolor(255, 255, 255)
         elif pc == 1:  # green
@@ -140,6 +151,8 @@ class lsystem:
         elif pc == 2:  # blue
             turtle.pencolor(0, 255, 0)
         elif pc == 3:  # blue
+            turtle.pencolor(0, 0, 255)
+        elif pc == 4:  # blue
             turtle.pencolor(0, 0, 0)
         else:
             self.pc = 0
